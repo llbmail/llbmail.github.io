@@ -1,11 +1,904 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>llbmail.github.io</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="蓝萝宝邮箱 —— 完全免费、无广告、免注册的临时邮箱工具。保护隐私，随用即弃。">
+<meta name="theme-color" content="#0078d4">
+<title>蓝萝宝邮箱 — 保护隐私 · 随用即弃</title>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="蓝萝宝邮箱">
+<meta property="og:title" content="蓝萝宝邮箱 — 保护隐私 · 随用即弃">
+<meta property="og:description" content="完全免费、无广告、免注册的临时邮箱工具。">
+<meta property="og:url" content="https://llbmail.github.io/">
+<meta property="og:image" content="https://llbmail.github.io/app/og-cover.png">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230078d4'/><path d='M23 33 L50 54 L77 33' stroke='white' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+<style>
+  :root{
+    --brand:#0078d4;
+    --brand-dark:#005fa8;
+    --brand-soft:#e8f2fd;
+    --bg:#ffffff;
+    --bg-soft:#f6f8fb;
+    --text:#10161f;
+    --text-2:#5b6673;
+    --text-3:#8b95a3;
+    --border:#e5e9ef;
+    --radius:16px;
+    --maxw:1120px;
+    --header-h:92px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{
+    scroll-behavior:smooth;
+    -webkit-text-size-adjust:100%;
+  }
+
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    color:var(--text);
+    background:var(--bg);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  section{scroll-margin-top:calc(var(--header-h) + 12px);}
+  a{color:inherit;}
+  svg{display:block;}
+
+  :focus-visible{
+    outline:2px solid var(--brand);
+    outline-offset:2px;
+    border-radius:8px;
+  }
+
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(255,255,255,.86);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid var(--border);
+    padding-top: max(env(safe-area-inset-top), 16px);
+  }
+
+  .header-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    height:76px;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    gap:28px;
+    position:relative;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:-.01em;
+    color:var(--text);
+    flex-shrink:0;
+  }
+
+  .brand-mark{
+    width:32px;
+    height:32px;
+    border-radius:9px;
+    overflow:hidden;
+    box-shadow:0 2px 6px rgba(0,120,212,.2);
+  }
+
+  .brand-mark svg{width:100%;height:100%;}
+
+  .nav{
+    display:flex;
+    gap:2px;
+    margin-right:auto;
+  }
+
+  .nav a{
+    color:var(--text-2);
+    text-decoration:none;
+    font-size:14.5px;
+    padding:8px 13px;
+    border-radius:8px;
+    transition:background .18s,color .18s;
+  }
+
+  .nav a:hover{
+    color:var(--text);
+    background:var(--bg-soft);
+  }
+
+  .nav-toggle{
+    display:none;
+    margin-left:auto;
+    background:none;
+    border:0;
+    font-size:22px;
+    line-height:1;
+    padding:8px 10px;
+    color:var(--text);
+    cursor:pointer;
+    border-radius:8px;
+  }
+
+  .hero{
+    background:radial-gradient(1100px 460px at 50% -8%, #e8f2fd 0%, #ffffff 62%);
+    padding:96px 24px 100px;
+    text-align:center;
+  }
+
+  .hero-inner{
+    max-width:760px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--brand);
+    background:var(--brand-soft);
+    border-radius:999px;
+    padding:6px 16px;
+    margin-bottom:24px;
+  }
+
+  .eyebrow .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--brand);
+  }
+
+  .hero h1{
+    font-size:clamp(30px,5vw,52px);
+    line-height:1.2;
+    letter-spacing:-.022em;
+    font-weight:700;
+    margin-bottom:22px;
+    color:var(--text);
+  }
+
+  .lead{
+    font-size:17px;
+    color:var(--text-2);
+    margin-bottom:38px;
+    line-height:1.7;
+    max-width:600px;
+  }
+
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:14px;
+    width:100%;
+  }
+
+  .btn-primary{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    height:52px;
+    padding:0 32px;
+    border-radius:12px;
+    background:var(--brand);
+    color:#fff;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    box-shadow:0 6px 18px -6px rgba(0,120,212,.55);
+    transition:background .18s,transform .12s,box-shadow .18s;
+  }
+
+  .btn-primary:hover{
+    background:var(--brand-dark);
+    box-shadow:0 10px 24px -8px rgba(0,120,212,.6);
+  }
+
+  .btn-primary:active{transform:scale(.98);}
+  .btn-primary svg{width:20px;height:20px;flex-shrink:0;}
+
+  .btn-ghost{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:52px;
+    padding:0 28px;
+    border-radius:12px;
+    background:#fff;
+    color:var(--text);
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    border:1px solid var(--border);
+    transition:background .18s,border-color .18s;
+  }
+
+  .btn-ghost:hover{
+    background:var(--bg-soft);
+    border-color:#d3dae4;
+  }
+
+  .hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:12px 24px;
+    margin-top:34px;
+    font-size:14px;
+    color:var(--text-3);
+  }
+
+  .hero-meta span{display:inline-flex;align-items:center;gap:6px;}
+  .hero-meta svg{width:16px;height:16px;color:#9aa6b5;}
+
+  .section-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  .section-head{max-width:640px;margin:0 auto 52px;text-align:center;}
+  .section-head h2{font-size:clamp(25px,3.2vw,36px);line-height:1.25;letter-spacing:-.02em;font-weight:700;margin-bottom:14px;}
+  .section-head p{font-size:15.5px;color:var(--text-2);}
+  .section-head .eyebrow{margin-bottom:16px;}
+
+  .features{padding:88px 0; background:#fafbfc; border-top:1px solid var(--border);}
+
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+
+  .feature{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px 24px;
+    transition:transform .22s,box-shadow .22s,border-color .22s;
+  }
+
+  .feature:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 24px -8px rgba(16,22,31,.12);
+    border-color:#d9e2ee;
+  }
+
+  .feature-ico{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:var(--brand-soft);
+    color:var(--brand);
+    display:grid;
+    place-items:center;
+    margin-bottom:18px;
+  }
+
+  .feature-ico svg{width:21px;height:21px;}
+  .feature h3{font-size:16.5px;font-weight:700;letter-spacing:-.01em;margin-bottom:8px;}
+  .feature p{font-size:14px;color:var(--text-2);line-height:1.68;}
+
+  .ai{
+    padding:88px 0;
+    background:#fff;
+    border-top:1px solid var(--border);
+  }
+
+  .ai-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+    margin-bottom:36px;
+  }
+
+  .ai-item{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    background:#fafbfc;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px;
+    transition:background .22s,border-color .22s,transform .22s,box-shadow .22s;
+  }
+
+  .ai-item:hover{
+    background:#fff;
+    border-color:#d9e2ee;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px -8px rgba(16,22,31,.08);
+  }
+
+  .ai-ico{
+    width:40px;
+    height:40px;
+    border-radius:11px;
+    background:var(--brand-soft);
+    color:var(--brand);
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+  }
+
+  .ai-ico svg{width:20px;height:20px;}
+  .ai-item h3{font-size:15.5px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em;}
+  .ai-item p{font-size:13.8px;color:var(--text-2);line-height:1.65;}
+
+  .ai-note{
+    font-size:13.5px;
+    color:var(--text-3);
+    border-top:1px solid var(--border);
+    padding-top:24px;
+    line-height:1.8;
+    text-align:center;
+  }
+
+  .privacy{padding:88px 0; background:#fafbfc; border-top:1px solid var(--border);}
+
+  .privacy-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+
+  .privacy-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:32px 26px;
+    text-align:center;
+  }
+
+  .privacy-card .feature-ico{
+    margin:0 auto 18px;
+    width:50px;
+    height:50px;
+    border-radius:14px;
+  }
+
+  .privacy-card .feature-ico svg{width:23px;height:23px;}
+  .privacy-card h3{font-size:16px;font-weight:700;margin-bottom:8px;}
+  .privacy-card p{font-size:13.8px;color:var(--text-2);}
+
+  .download{
+    padding:96px 24px;
+    text-align:center;
+    background:#fff;
+    border-top:1px solid var(--border);
+  }
+
+  .app-icon{
+    width:96px;
+    height:96px;
+    border-radius:24px;
+    margin:0 auto 28px;
+    box-shadow:0 16px 34px -14px rgba(0,120,212,.6);
+    overflow:hidden;
+  }
+
+  .app-icon svg{width:100%;height:100%;}
+
+  .download h2{font-size:clamp(25px,3.2vw,34px);letter-spacing:-.02em;font-weight:700;margin-bottom:12px;}
+  .download-sub{font-size:15px;color:var(--text-2);margin-bottom:32px;}
+
+  .btn-primary-lg{
+    height:56px;
+    padding:0 36px;
+    font-size:16.5px;
+    border-radius:14px;
+  }
+
+  .download-hint{font-size:13px;color:var(--text-3);margin-top:20px;}
+  .download-hint.warn{color:#b45309;}
+
+  .site-footer{
+    border-top:1px solid var(--border);
+    background:#fafbfc;
+    padding:56px 24px 0;
+  }
+
+  .footer-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    gap:48px;
+    flex-wrap:wrap;
+    padding-bottom:44px;
+  }
+
+  .footer-brand{max-width:320px;}
+  .footer-brand .brand{margin-bottom:14px;}
+  .footer-brand p{font-size:13.8px;color:var(--text-2);line-height:1.7;}
+
+  .footer-links{display:flex;gap:64px;flex-wrap:wrap;}
+  .footer-col{display:flex;flex-direction:column;gap:11px;}
+
+  .footer-col h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;letter-spacing:.01em;}
+  .footer-col a{
+    font-size:13.8px;color:var(--text-2);text-decoration:none;
+    transition:color .18s;width:fit-content;cursor:pointer;
+  }
+  .footer-col a:hover{color:var(--brand);}
+
+  .footer-bottom{
+    max-width:var(--maxw);
+    margin:0 auto;
+    border-top:1px solid var(--border);
+    padding:20px 0 26px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    font-size:12.8px;
+    color:var(--text-3);
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:36px;transform:translate(-50%,18px);
+    background:#10161f;color:#fff;font-size:13.5px;font-weight:500;padding:12px 20px;
+    border-radius:12px;box-shadow:0 14px 34px -12px rgba(16,22,31,.5);
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:999;
+    max-width:calc(100vw - 40px);text-align:center;line-height:1.5;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+
+  @media (max-width:960px){
+    .feature-grid{grid-template-columns:repeat(2,1fr);}
+    .ai-grid{grid-template-columns:1fr;}
+    .privacy-grid{grid-template-columns:1fr;}
+    .footer-inner{flex-direction:column;gap:36px;}
+    .footer-links{gap:48px;}
+  }
+
+  @media (max-width:680px){
+    .header-inner{height:64px; padding:0 18px; gap:12px;}
+
+    .nav-toggle{display:block;}
+    .nav{
+      display:none;
+      position:absolute;
+      top:100%;left:0;right:0;
+      flex-direction:column;
+      gap:0;
+      padding:8px;
+      margin-right:0;
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      box-shadow:0 12px 24px -12px rgba(16,22,31,.18);
+    }
+    .nav.open{display:flex;}
+    .nav a{padding:12px 16px;border-radius:10px;}
+
+    .hero{padding:64px 18px 72px;}
+    .lead{font-size:15px;}
+    .btn-primary,.btn-ghost{height:50px;font-size:15px;padding:0 24px;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions > *{width:100%;}
+    .feature-grid{grid-template-columns:1fr;}
+    .features,.ai,.privacy,.download{padding:64px 0;}
+    .section-inner{padding:0 18px;}
+    .footer-links{gap:40px;}
+    .footer-bottom{flex-direction:column;gap:6px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{
+      animation-duration:.01ms !important;
+      transition-duration:.01ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
 </head>
 <body>
-  <h1>欢迎</h1>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgGradHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#005cff" />
+              <stop offset="100%" stop-color="#00b5ff" />
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="24" fill="url(#bgGradHeader)" />
+          <path d="M21 32 C21 30 23 28 25 28 H75 C77 28 79 30 79 32 V74 C79 76 77 78 75 78 H25 C23 78 21 76 21 74 V32 Z" fill="#e5f1ff" />
+          <path d="M25 31 H75 C76.1 31 77 31.9 77 33 V72 C77 73.1 76.1 74 75 74 H25 C23.9 74 23 73.1 23 72 V33 C23 31.9 23.9 31 25 31 Z" fill="#ffffff" />
+          <path d="M23 33 L50 54 L77 33" stroke="#0078d4" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M23 73 L42 54" stroke="#e5f1ff" stroke-width="2" />
+          <path d="M77 73 L58 54" stroke="#e5f1ff" stroke-width="2" />
+        </svg>
+      </span>
+      <span>蓝萝宝邮箱</span>
+    </a>
+
+    <button class="nav-toggle" id="navToggle" type="button"
+            aria-label="打开菜单" aria-expanded="false" aria-controls="nav">☰</button>
+
+    <nav class="nav" id="nav">
+      <a href="#features">功能特性</a>
+      <a href="#ai">小蓝AI</a>
+      <a href="#privacy">隐私承诺</a>
+      <a href="#download">下载</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow"><span class="dot"></span>V<span data-version>6.7.4</span> · 完全免费 · 无广告</span>
+      <h1>保护隐私<br>随用即弃的临时邮箱</h1>
+      <p class="lead">
+        免注册、免登录，打开即用。任何发往临时地址的邮件都会实时同步到你的手机上，验证码自动识别，
+        还有一位随时待命的小蓝AI 帮你处理一切。
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn-primary" href="#download">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.6 9.48l1.84-3.18a.4.4 0 0 0-.68-.42l-1.86 3.22a11.4 11.4 0 0 0-9.8 0L5.24 5.88a.4.4 0 1 0-.68.42L6.4 9.48A10.9 10.9 0 0 0 1 18.5h22a10.9 10.9 0 0 0-5.4-9.02zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z" />
+          </svg>
+          立即下载安卓版
+        </a>
+        <a class="btn-ghost" href="#features">了解功能</a>
+      </div>
+
+      <div class="hero-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>无需注册</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>无广告捆绑</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5" /></svg>Android 7.0+</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2>该有的都有，不该有的都没有</h2>
+        <p>没有注册流程，没有会员体系，没有开屏广告。打开就是收件箱，用完就丢，干干净净。</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" /></svg>
+          </div>
+          <h3>打开即用</h3>
+          <p>启动自动生成一个随机临时邮箱地址，无需填写任何个人信息。也可以自定义前缀，不满意随时一键更换。</p>
+        </div>
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" /></svg>
+          </div>
+          <h3>秒级同步</h3>
+          <p>支持 3 / 5 / 10 / 30 秒四档轮询频率。新邮件到达即刻推送并伴随提示音与震动，不用来回手动刷新。</p>
+        </div>
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18" /></svg>
+          </div>
+          <h3>验证码智能识别</h3>
+          <p>自动从邮件主题与正文中提取验证码，在收件箱顶部悬浮展示，一键复制，省去翻找邮件的麻烦。</p>
+        </div>
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z" /></svg>
+          </div>
+          <h3>小蓝AI 管家</h3>
+          <p>用一句话让它读邮件、取验证码、换邮箱、开护眼模式。它拥有完整的应用内操作权限，随时待命。</p>
+        </div>
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+          </div>
+          <h3>护眼与静音</h3>
+          <p>深色模式一键切换，夜间使用不刺眼。提示音随手开关，开会或休息时安安静静，不打扰任何人。</p>
+        </div>
+        <div class="feature">
+          <div class="feature-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+          </div>
+          <h3>设置留在本机</h3>
+          <p>邮箱地址、对话记录、个性化设置全部保存在本机，不上传云端。换设备时不会留下任何痕迹。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai" id="ai">
+    <div class="section-inner">
+      <div class="section-head">
+        <span class="eyebrow"><span class="dot"></span>小蓝AI</span>
+        <h2>一句话，它就把事情办了</h2>
+        <p>基于大语言模型构建的邮箱管家，拥有完整的应用内操作权限。你说要做什么，剩下的交给它。</p>
+      </div>
+
+      <div class="ai-grid">
+        <div class="ai-item">
+          <span class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3" /><path d="M3.2 7.2 12 13.2l8.8-6" /></svg></span>
+          <div>
+            <h3>读取与提炼邮件</h3>
+            <p>“帮我看看最新邮件说了什么”——它会打开邮件，把发件人、主题、正文重点整理成一段话告诉你。</p>
+          </div>
+        </div>
+        <div class="ai-item">
+          <span class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18" /></svg></span>
+          <div>
+            <h3>自动提取验证码</h3>
+            <p>扫描收件箱里最新的几封邮件，找到验证码并直接复制到剪贴板，你只需要粘贴。</p>
+          </div>
+        </div>
+        <div class="ai-item">
+          <span class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" /></svg></span>
+          <div>
+            <h3>更换邮箱与清理收件箱</h3>
+            <p>“换一个邮箱”“把收件箱清空”——涉及敏感操作时会弹窗二次确认，AI 不会擅自动手。</p>
+          </div>
+        </div>
+        <div class="ai-item">
+          <span class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.37.44.66.81.81H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg></span>
+          <div>
+            <h3>控制应用内各项设置</h3>
+            <p>护眼模式、提示音、同步频率、自动朗读、音色切换，一句话就能改，不需要层层翻菜单。</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="ai-note">
+        支持自定义人设与称呼 · 多存档对话独立隔离 · 语音断点续读<br>
+        朗读音色提供普通话女声、普通话男声、香港粤语女声、台湾女声四种选择
+      </p>
+    </div>
+  </section>
+
+  <section class="privacy" id="privacy">
+    <div class="section-inner">
+      <div class="section-head">
+        <h2>把隐私还给你</h2>
+        <p>临时邮箱的意义就是不留痕迹。我们没有任何理由去收集你的信息。</p>
+      </div>
+
+      <div class="privacy-grid">
+        <div class="privacy-card">
+          <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10.5" rx="2.5" /><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" /></svg></div>
+          <h3>不收集个人信息</h3>
+          <p>不需要手机号、不需要邮箱验证、不需要任何身份信息。打开就是一个全新的临时地址。</p>
+        </div>
+        <div class="privacy-card">
+          <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg></div>
+          <h3>无广告无捆绑</h3>
+          <p>没有开屏广告，没有弹窗推广，不捆绑任何第三方软件，不植入任何插件。</p>
+        </div>
+        <div class="privacy-card">
+          <div class="feature-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3" /><path d="M3 9h18M8 4v5" /></svg></div>
+          <h3>数据保存在本机</h3>
+          <p>对话记录与个性化设置只存在你的设备上，不上传云端，也不会被用于任何形式的分析。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="download" id="download">
+    <div class="app-icon">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bgGradDownload" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#005cff" />
+            <stop offset="100%" stop-color="#00b5ff" />
+          </linearGradient>
+        </defs>
+        <rect width="100" height="100" rx="24" fill="url(#bgGradDownload)" />
+        <path d="M21 32 C21 30 23 28 25 28 H75 C77 28 79 30 79 32 V74 C79 76 77 78 75 78 H25 C23 78 21 76 21 74 V32 Z" fill="#e5f1ff" />
+        <path d="M25 31 H75 C76.1 31 77 31.9 77 33 V72 C77 73.1 76.1 74 75 74 H25 C23.9 74 23 73.1 23 72 V33 C23 31.9 23.9 31 25 31 Z" fill="#ffffff" />
+        <path d="M23 33 L50 54 L77 33" stroke="#0078d4" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M23 73 L42 54" stroke="#e5f1ff" stroke-width="2" />
+        <path d="M77 73 L58 54" stroke="#e5f1ff" stroke-width="2" />
+      </svg>
+    </div>
+
+    <h2>下载蓝萝宝邮箱</h2>
+    <p class="download-sub">V<span data-version>6.7.4</span> · 完全免费 · 无需注册 · 无广告</p>
+
+    <a class="btn-primary btn-primary-lg"
+       id="downloadBtn"
+       href="./app/llb.apk?v=6.7.4"
+       download="llb-6.7.4.apk"
+       type="application/vnd.android.package-archive"
+       rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.6 9.48l1.84-3.18a.4.4 0 0 0-.68-.42l-1.86 3.22a11.4 11.4 0 0 0-9.8 0L5.24 5.88a.4.4 0 1 0-.68.42L6.4 9.48A10.9 10.9 0 0 0 1 18.5h22a10.9 10.9 0 0 0-5.4-9.02zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z" />
+      </svg>
+      下载安卓版 APK
+    </a>
+
+    <p class="download-hint">适用于 Android 7.0 及以上系统</p>
+    <p class="download-hint warn" id="iosHint" hidden>
+      当前设备为 iOS，无法安装 Android 安装包，请在安卓手机上打开本页。
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a class="brand" href="#top">
+        <span class="brand-mark">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bgGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#005cff" />
+                <stop offset="100%" stop-color="#00b5ff" />
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" rx="24" fill="url(#bgGradFooter)" />
+            <path d="M21 32 C21 30 23 28 25 28 H75 C77 28 79 30 79 32 V74 C79 76 77 78 75 78 H25 C23 78 21 76 21 74 V32 Z" fill="#e5f1ff" />
+            <path d="M25 31 H75 C76.1 31 77 31.9 77 33 V72 C77 73.1 76.1 74 75 74 H25 C23.9 74 23 73.1 23 72 V33 C23 31.9 23.9 31 25 31 Z" fill="#ffffff" />
+            <path d="M23 33 L50 54 L77 33" stroke="#0078d4" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M23 73 L42 54" stroke="#e5f1ff" stroke-width="2" />
+            <path d="M77 73 L58 54" stroke="#e5f1ff" stroke-width="2" />
+          </svg>
+        </span>
+        <span>蓝萝宝邮箱</span>
+      </a>
+      <p>保护隐私 · 随用即弃的临时邮箱工具。完全免费，无广告，无捆绑。</p>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>产品</h4>
+        <a href="#features">功能特性</a>
+        <a href="#ai">小蓝AI</a>
+        <a href="#privacy">隐私承诺</a>
+        <a href="#download">下载</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a id="contactAuthor">联系作者</a>
+        <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=Q3FN2FrUl4Lu99Xfu0OiSY4VLsX0H%2FVCA2lY6KzEY8Dct9fAFEjo0isJZYMXS8C5&busi_data=eyJncm91cENvZGUiOiIxMDQ1MTUwOTM2IiwidG9rZW4iOiJKN2hWbUdTMVpuVDVtRHBVUGFzdXgyMzhMSVV1cFFTekFDT1BqT0tQNmZUaXNMOUZNL0wyTVBLSitieU1QYUNXIiwidWluIjoiMzk0OTg1MDg4MSJ9&data=BAFwBZAF78uqpQ-XAi_REpX3HOEulh6H6mrG16bgmVNCW6zRIzR98o-3lIOd3nNgjXK7gC__9Zba2POqFQ71cw&svctype=4&tempid=h5_group_info" target="_blank" rel="noopener noreferrer">加入群聊</a>
+      </div>
+      <div class="footer-col">
+        <h4>开发者</h4>
+        <a href="https://github.com/llbmail" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© <span id="year">2026</span> 蓝萝宝邮箱</span>
+    <span>本应用仅供学习交流使用，请勿用于非法用途</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  const APP_VERSION = '6.7.4';
+  document.querySelectorAll('[data-version]').forEach(el => {
+    el.textContent = APP_VERSION;
+  });
+
+  const headerEl = document.querySelector('.site-header');
+  function syncHeaderHeight(){
+    if (!headerEl) return;
+    document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+  }
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+  window.addEventListener('orientationchange', syncHeaderHeight);
+
+  let toastTimer = null;
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  function copyText(text) {
+    return new Promise((resolve, reject) => {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(resolve).catch(() => fallback());
+      } else {
+        fallback();
+      }
+      function fallback() {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.top = '-1000px';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          ta.setSelectionRange(0, text.length);
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok ? resolve() : reject();
+        } catch (e) {
+          reject(e);
+        }
+      }
+    });
+  }
+
+  const AUTHOR_EMAIL = 'mianbao565777@outlook.com';
+  const contactEl = document.getElementById('contactAuthor');
+  if (contactEl) {
+    contactEl.addEventListener('click', function (e) {
+      e.preventDefault();
+      copyText(AUTHOR_EMAIL)
+        .then(() => showToast('作者邮箱已复制：' + AUTHOR_EMAIL))
+        .catch(() => showToast('复制失败，作者邮箱：' + AUTHOR_EMAIL));
+    });
+  }
+
+  const navEl = document.getElementById('nav');
+  const navToggle = document.getElementById('navToggle');
+  if (navEl && navToggle) {
+    navToggle.addEventListener('click', () => {
+      const open = navEl.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单');
+      navToggle.textContent = open ? '✕' : '☰';
+    });
+    navEl.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        navEl.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', '打开菜单');
+        navToggle.textContent = '☰';
+      }
+    });
+  }
+
+  const dl = document.getElementById('downloadBtn');
+  if (dl) {
+    dl.addEventListener('click', () => {
+      showToast('开始下载，请查看浏览器下载通知');
+    });
+  }
+
+  if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    const iosHint = document.getElementById('iosHint');
+    if (iosHint) iosHint.hidden = false;
+  }
+
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
